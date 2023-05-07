@@ -13,18 +13,14 @@
 
 	const width = 704;
 	const height = 704;
+	const cellSize = 22;
 
 
 	let maze_map;
 
 	function clearCanvas() {
-		const width = canvas.width;
-		const height = canvas.height;
-
-		const cellSize = 22;
 		const cols = Math.floor(width / cellSize);
 		const rows = Math.floor(height / cellSize);
-
 
 		const context = canvas.getContext('2d');
 		context.fillStyle = '#000';
@@ -43,11 +39,6 @@
 	}
 
 	onMount(() => {
-
-		const width = canvas.width;
-		const height = canvas.height;
-
-		const cellSize = 22;
 		const cols = Math.floor(width / cellSize);
 		const rows = Math.floor(height / cellSize);
 
