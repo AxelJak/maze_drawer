@@ -9,6 +9,10 @@
 	let canvas;
 
 	let maze_color = "#000";
+	let maze_number = 0;
+
+
+	let maze_map;
 
 	function clearCanvas() {
 		const width = canvas.width;
@@ -20,18 +24,19 @@
 
 
 		const context = canvas.getContext('2d');
-		// @ts-ignore
 		context.fillStyle = '#ADADAD';
 		context.strokeStyle = '#ccc';
 		context.lineWidth = 1;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
+				maze_map[i][j] = 0;
 				const x = j * cellSize;
 				const y = i * cellSize;
 				context.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
 				context.strokeRect(x, y, cellSize, cellSize);
 			}
 		}
+		generateMaze();
 	}
 
 	onMount(() => {
@@ -43,7 +48,7 @@
 		const cols = Math.floor(width / cellSize);
 		const rows = Math.floor(height / cellSize);
 
-		const grid = new Array(cols).fill(null).map(() => new Array(rows).fill(null));
+		maze_map = new Array(cols).fill(0).map(() => new Array(rows).fill(0));
 
 		const context = canvas.getContext('2d');
 		
@@ -64,7 +69,7 @@
 		const y = Math.floor(event.offsetY / cellSize);
 
 		// Update the state of the clicked cell in the grid
-		grid[y][x] = 1;
+		maze_map[y][x] = maze_number;
 
 		// Redraw the clicked cell on the canvas
 		
@@ -80,7 +85,7 @@
 			const y = Math.floor(event.offsetY / cellSize);
 
 			// Update the state of the cell in the grid
-			grid[y][x] = 1;
+			maze_map[y][x] = maze_number;
 
 			// Redraw the cell on the canvas
 			context.fillStyle = maze_color;
@@ -95,25 +100,41 @@
 			// Stop listening for mousemove and mouseup events
 			canvas.removeEventListener('mousemove', onMouseMove);
 			canvas.removeEventListener('mouseup', onMouseUp);
+			generateMaze();
 		}
 		});
 	});
+
+	function generateMaze() {
+		let maze = document.getElementById("maze");
+		maze.innerHTML = "{";
+
+		for (let i = 0; i < 32; i++) {
+			maze.innerHTML += "{" + maze_map[i] + "},<br>";
+		}
+	}
+
 </script>
 
 <div id="colorButtons">
-	<button on:click={clearCanvas} id="blue">Clear</button>
-	<button on:click={() => { maze_color = '#201FFF' }} id="blue">Blue</button>
-	<button on:click={() => { maze_color = '#000' }} id="black">Black</button>
-	<button on:click={() => { maze_color = '#FFF' }} id="white">White</button>
-	<button on:click={() => { maze_color = '#FF0000' }} id="red">Red</button>
-	<button on:click={() => { maze_color = '#329313' }} id="green">Green</button>
+	<button on:click={clearCanvas} id="clear">Clear</button>
+	<button on:click={() => { maze_color = '#201FFF'; maze_number = 2;}} id="blue">Blue</button>
+	<button on:click={() => { maze_color = '#000'; maze_number = 0; }} id="black">Black</button>
+	<button on:click={() => { maze_color = '#FFF'; maze_number = 7; }} id="white">White</button>
+	<button on:click={() => { maze_color = '#FF0000'; maze_number = 1; }} id="red">Red</button>
+	<button on:click={() => { maze_color = '#329313'; maze_number = 4; }} id="green">Green</button>
 </div>
 
-<canvas
-	bind:this={canvas}
-	width={640}
-	height={640}
-></canvas>
+<div id="maze_div">
+	<canvas
+		bind:this={canvas}
+		width={640}
+		height={640}
+	></canvas>
+
+	<p id="maze"></p>
+
+</div>
 
 
 
@@ -136,5 +157,18 @@
 	}
 	button {
 		margin-inline: 10px;
+	}
+	#maze_div {
+		border: #666 solid;
+		display: flex;
+	}
+
+	p{
+		word-break: break-all;
+		white-space: normal;
+		text-align:center;
+		border: #000 solid;
+		width: 500px;
+		margin: 10px;
 	}
 </style>
