@@ -123,6 +123,7 @@
 	<button on:click={() => { maze_color = '#FFF'; maze_number = 7; }} id="white">White</button>
 	<button on:click={() => { maze_color = '#FF0000'; maze_number = 1; }} id="red">Red</button>
 	<button on:click={() => { maze_color = '#2ECC71'; maze_number = 4; }} id="green">Green</button>
+	<button on:click={() => { maze_color = '#fcba03'; maze_number = 5; }} id="yellow">Yellow</button>
 </div>
 
 <div id="maze_div">
@@ -241,6 +242,13 @@
 	#red:hover,
 	#red:focus {
 		background-color: #FF6363;
+	}
+	#yellow {
+		background-color: #fcba03;
+	}
+	#yellow:hover,
+	#yellow:focus {
+		background-color: #f7d165;
 	}
 
 	#white {
